@@ -1,0 +1,21 @@
+{
+    "name": "spiegeleye/php-string-plus",
+    "description": "More string helpers for PHP",
+    "license": "MIT",
+    "homepage": "http://spiegeleye.uk/",
+    "authors": [
+        {
+            "name": "Andre Zahn",
+            "email": "andre@spiegeleye.uk"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {
+        "php": ">=5.4.0"
+    },
+    "autoload": {
+        "psr-0": {
+            "StrPlus": "src/"
+        }
+    }
+}
