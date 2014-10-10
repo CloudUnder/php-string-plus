@@ -5,7 +5,7 @@ namespace StrPlus;
 class StrPlus {
 
 	/**
-	 * Replace non-printable control characters.
+	 * Replaces non-printable control characters.
 	 *
 	 * @param string
 	 * @return string
