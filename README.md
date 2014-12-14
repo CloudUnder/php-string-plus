@@ -28,3 +28,7 @@ Converts a HTML formatted block to a plain text one-line string without non-prin
 `StrPlus::multi_line_text_to_html($string)`
 
 Converts a multi-line plain text string to a multi-line HTML string where line breaks become `<br>` tags.
+
+`limit($value, $limit, $end = '…', $preserve_words = true)`
+
+Limit string to a number of characters and preserve words where possible (optional; default).
