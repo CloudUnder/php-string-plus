@@ -5,21 +5,31 @@ namespace StrPlus;
 class StrPlus {
 
 	/**
-	 * Remove invalid UTF-8 bytes.
+	 * Clear invalid UTF-8 strings.
+	 * The initial idea was to only remove invalid UTF-8 sequences.
+	 * My best shot so far was:
+	 *   iconv('UTF-8', 'UTF-8//IGNORE', $string);
+	 * Unfortunately the behaviour of iconv is not consistent over
+	 * various systems. Sometimes it only removes invalid sequences
+	 * as expected, sometimes it clears the entire string.
+	 * To have consistency we always clear the string if it contains
+	 * invalid UTF-8.
 	 *
 	 * @param string
 	 * @return string
 	 */
 	public static function sanitize_utf8($string) {
-		echo "\nBEFORE: " . bin2hex($string);
-		$string = iconv('UTF-8', 'UTF-8//IGNORE', $string);
-		echo "\nAFTER:  " . bin2hex($string) . "\n";
-		return $string;
+		$sanitized = @iconv('UTF-8', 'UTF-8//IGNORE', $string);
+		if (strlen($string) !== strlen($sanitized)) {
+			$sanitized = '';
+		}
+		return $sanitized;
 	}
 
 	/**
 	 * Replaces non-printable control characters.
-	 * Note: Invalid UTF-8 characters will be removed, not replaced!
+	 * Note: If string is not valid UTF-8, the entire string will
+	 * be returned empty.
 	 *
 	 * @param string
 	 * @return string
@@ -55,7 +65,7 @@ class StrPlus {
 		$string = str_replace('>', '> ', $string); // Create space between tags
 		$string = strip_tags($string);
 		$string = html_entity_decode($string);
-		$string = str_replace("\xc2\xa0", ' ', $string); // Replce UTF-8 version of &nbsp; (C2 A0) with normal space
+		$string = str_replace("\xC2\xA0", ' ', $string); // Replce UTF-8 version of &nbsp; (C2 A0) with normal space
 		return self::single_line($string);
 	}
 

@@ -2,25 +2,36 @@
 
 class StrPlusTest extends PHPUnit_Framework_TestCase {
 
-	public function testReplaceControlChars() {
-		error_reporting(E_ALL & ~E_NOTICE);
+	public function testSanitizeUTF8() {
+		$result = StrPlus\StrPlus::sanitize_utf8("a\x80b");
+		$expect = '';
+		$this->assertEquals($expect, $result);
 
+		$result = StrPlus\StrPlus::sanitize_utf8("\xC3\x2E");
+		$expect = '';
+		$this->assertEquals($expect, $result);
+
+		$result = StrPlus\StrPlus::sanitize_utf8("\x00Å");
+		$expect = "\x00Å";
+		$this->assertEquals($expect, $result);
+	}
+
+	public function testReplaceControlChars() {
 		// Replace low-end control characters and make sure the replacement is actually used
 		$result = StrPlus\StrPlus::replace_control_chars('-*-', "a\x00b c");
 		$expect = 'a-*-b c';
 		$this->assertEquals($expect, $result);
 
-		// Ensure invalid UTF-8 characters don't slip through.
+		// Ensure invalid UTF-8 sequences don't slip through.
 		// Note 1: ASCII character 0x80 is 0xC2, 0x80 in UTF-8.
 		//         0x80 on its own is invalid UTF-8.
-		// Note 2: Invalid characters will be removed, not replaced!
+		// Note 2: If string contains an invalid UTF-8 sequence the
+		//         entire string will be cleared.
 		$result = StrPlus\StrPlus::replace_control_chars('-', "a\x80b");
-		$expect = 'ab';
+		$expect = '';
 		$this->assertEquals($expect, $result);
 
 		$result = StrPlus\StrPlus::replace_control_chars('-', "a\x7fb\xC2\x80c");
-		// echo "\n" . bin2hex($result) . " = " . $result . "\n";
-		// die();
 		$expect = 'a-b-c';
 		$this->assertEquals($expect, $result);
 
