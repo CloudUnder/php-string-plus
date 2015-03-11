@@ -77,7 +77,7 @@ class StrPlus {
 	 * @return string
 	 */
 	public static function multi_line_text_to_html($string) {
-		return nl2br(htmlspecialchars($string), false);
+		return str_replace(["\n", "\r"], '', nl2br(htmlspecialchars($string), false));
 	}
 
 	/**

@@ -71,4 +71,47 @@ class StrPlusTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals($expect, $result);
 	}
 
+	public function testMultiLineTextToHtml() {
+		// Test new line and no trimming left (*nix)
+		$result = StrPlus\StrPlus::multi_line_text_to_html(" a\nb");
+		$expect = ' a<br>b';
+		$this->assertEquals($expect, $result);
+
+		// Test return and no trimming right (?)
+		$result = StrPlus\StrPlus::multi_line_text_to_html("a\rb ");
+		$expect = 'a<br>b ';
+		$this->assertEquals($expect, $result);
+
+		// Test return + new line (Windows)
+		$result = StrPlus\StrPlus::multi_line_text_to_html("a\r\nb");
+		$expect = 'a<br>b';
+		$this->assertEquals($expect, $result);
+
+		// Test new line + return (old Macs)
+		$result = StrPlus\StrPlus::multi_line_text_to_html("a\n\rb");
+		$expect = 'a<br>b';
+		$this->assertEquals($expect, $result);
+
+		// Test two successive new lines
+		$result = StrPlus\StrPlus::multi_line_text_to_html("a\n\nb");
+		$expect = 'a<br><br>b';
+		$this->assertEquals($expect, $result);
+
+		// Test two successive returns
+		$result = StrPlus\StrPlus::multi_line_text_to_html("a\r\rb");
+		$expect = 'a<br><br>b';
+		$this->assertEquals($expect, $result);
+
+		// Test two successive returns + new lines (Windows)
+		$result = StrPlus\StrPlus::multi_line_text_to_html("a\r\n\r\nb");
+		$expect = 'a<br><br>b';
+		$this->assertEquals($expect, $result);
+
+		// Ensure HTML code and other special characters in string remain
+		// readable as HTML like it was before
+		$result = StrPlus\StrPlus::multi_line_text_to_html("<code>a =>\nb</code>");
+		$expect = '&lt;code&gt;a =&gt;<br>b&lt;/code&gt;';
+		$this->assertEquals($expect, $result);
+	}
+
 }
