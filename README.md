@@ -1,13 +1,19 @@
 php-string-plus
 ===============
 
-More string helpers for PHP
+More string helpers for PHP (and Laravel).
+
+[![Build Status](https://travis-ci.org/CloudUnder/php-string-plus.svg)](https://travis-ci.org/CloudUnder/php-string-plus)
+[![Latest Stable Version](https://poser.pugx.org/spiegeleye/php-string-plus/v/stable.svg)](https://packagist.org/packages/spiegeleye/php-string-plus)
+[![Latest Unstable Version](https://poser.pugx.org/spiegeleye/php-string-plus/v/unstable.svg)](https://packagist.org/packages/spiegeleye/php-string-plus)
+[![License](https://poser.pugx.org/spiegeleye/php-string-plus/license.svg)](https://packagist.org/packages/spiegeleye/php-string-plus)
+[![Total Downloads](https://poser.pugx.org/spiegeleye/php-string-plus/downloads.svg)](https://packagist.org/packages/spiegeleye/php-string-plus)
 
 ## Usage
 
 Require the package in your `composer.json` file:
 
-`"spiegeleye/php-string-plus": "1.1.*"`
+`"spiegeleye/php-string-plus": "1.2.*"`
 
 In your PHP file add `use StrPlus\StrPlus;` for convenience.
 

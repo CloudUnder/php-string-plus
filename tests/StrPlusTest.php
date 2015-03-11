@@ -3,6 +3,8 @@
 class StrPlusTest extends PHPUnit_Framework_TestCase {
 
 	public function testReplaceControlChars() {
+		error_reporting(E_ALL & ~E_NOTICE);
+
 		// Replace low-end control characters and make sure the replacement is actually used
 		$result = StrPlus\StrPlus::replace_control_chars('-*-', "a\x00b c");
 		$expect = 'a-*-b c';
