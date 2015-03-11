@@ -6,12 +6,14 @@ class StrPlus {
 
 	/**
 	 * Replaces non-printable control characters.
+	 * Note: Invalid UTF-8 characters will be removed, not replaced!
 	 *
 	 * @param string
 	 * @return string
 	 */
 	public static function replace_control_chars($replace, $string) {
-		return preg_replace('/[\x00-\x1F\x80-\x9F]/u', $replace, $string);
+		$string = iconv('UTF-8', 'UTF-8//IGNORE', $string);
+		return preg_replace('/[\x{0000}-\x{001f}\x{007f}-\x{009f}]/u', $replace, $string);
 	}
 
 	/**

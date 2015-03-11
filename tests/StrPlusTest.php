@@ -2,6 +2,42 @@
 
 class StrPlusTest extends PHPUnit_Framework_TestCase {
 
+	public function testReplaceControlChars() {
+		// Replace low-end control characters and make sure the replacement is actually used
+		$result = StrPlus\StrPlus::replace_control_chars('-*-', "a\x00b c");
+		$expect = 'a-*-b c';
+		$this->assertEquals($expect, $result);
+
+		// Ensure invalid UTF-8 characters don't slip through.
+		// Note 1: ASCII character 0x80 is 0xC2, 0x80 in UTF-8.
+		//         0x80 on its own is invalid UTF-8.
+		// Note 2: Invalid characters will be removed, not replaced!
+		$result = StrPlus\StrPlus::replace_control_chars('-', "a\x80b");
+		$expect = 'ab';
+		$this->assertEquals($expect, $result);
+
+		$result = StrPlus\StrPlus::replace_control_chars('-', "a\x7fb\xC2\x80c");
+		// echo "\n" . bin2hex($result) . " = " . $result . "\n";
+		// die();
+		$expect = 'a-b-c';
+		$this->assertEquals($expect, $result);
+
+		// Replace both low-end and high-end control characters
+		$result = StrPlus\StrPlus::replace_control_chars('-', "a\x7Fb\x00c\xC2\x80d\xC2\x80e\xC2\x9Ff\r\n\tg");
+		$expect = 'a-b-c-d-e-f---g';
+		$this->assertEquals($expect, $result);
+
+		// Make sure normal, valid UTF-8 non-ASCII chracters are not replaced
+		$result = StrPlus\StrPlus::replace_control_chars('', "\xC3\x96l.~\xc2\xa1£€Σ");
+		$expect = 'Öl.~¡£€Σ';
+		$this->assertEquals($expect, $result);
+
+		// Cyrillic, Arabic, Miao
+		$expect = 'Ж ݖ ' . "\xf0\x96\xbc\x86";
+		$result = StrPlus\StrPlus::replace_control_chars('', $expect);
+		$this->assertEquals($expect, $result);
+	}
+
 	public function testSingleLine() {
 		$result = StrPlus\StrPlus::single_line("\na\rb\n\rc\r\nd\n\ne\n\n\n\n\nf\r\n\r\n\r\n\r\n\r\ng\n");
 		$expect = 'a b c d e f g';
