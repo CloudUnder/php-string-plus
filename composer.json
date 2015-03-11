@@ -1,12 +1,12 @@
 {
-    "name": "spiegeleye/php-string-plus",
+    "name": "cloudunder/php-string-plus",
     "description": "More string helpers for PHP",
     "license": "MIT",
-    "homepage": "https://spiegeleye.uk/",
+    "homepage": "https://cloudunder.io/",
     "authors": [
         {
-            "name": "Andre Zahn",
-            "email": "andre@spiegeleye.uk"
+            "name": "Nick Zahn",
+            "email": "nick@cloudunder.io"
         }
     ],
     "minimum-stability": "stable",
