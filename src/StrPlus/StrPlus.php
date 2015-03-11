@@ -5,6 +5,19 @@ namespace StrPlus;
 class StrPlus {
 
 	/**
+	 * Remove invalid UTF-8 bytes.
+	 *
+	 * @param string
+	 * @return string
+	 */
+	public static function sanitize_utf8($string) {
+		echo "\nBEFORE: " . bin2hex($string);
+		$string = iconv('UTF-8', 'UTF-8//IGNORE', $string);
+		echo "\nAFTER:  " . bin2hex($string) . "\n";
+		return $string;
+	}
+
+	/**
 	 * Replaces non-printable control characters.
 	 * Note: Invalid UTF-8 characters will be removed, not replaced!
 	 *
@@ -12,7 +25,7 @@ class StrPlus {
 	 * @return string
 	 */
 	public static function replace_control_chars($replace, $string) {
-		$string = iconv('UTF-8', 'UTF-8//IGNORE', $string);
+		$string = self::sanitize_utf8($string);
 		return preg_replace('/[\x{0000}-\x{001f}\x{007f}-\x{009f}]/u', $replace, $string);
 	}
 
