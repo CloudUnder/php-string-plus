@@ -114,4 +114,48 @@ class StrPlusTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals($expect, $result);
 	}
 
+	public function testLimit() {
+		//                  |10       |20       |30       |40       |50
+		//         12345678901234567890123456789012345678901234567890
+		$string = 'This is a test by Cloud Under. Thanks for reading.';
+
+		$expect = 'This is a test by Cloud Under. Thanks…';
+
+		// Preserve last full word
+		$result = StrPlus\StrPlus::limit($string, 37);
+		$this->assertEquals($expect, $result);
+
+		// Don't leave an empty space before ending
+		$result = StrPlus\StrPlus::limit($string, 38);
+		$this->assertEquals($expect, $result);
+
+		// Preserve last full word
+		$result = StrPlus\StrPlus::limit($string, 39);
+		$this->assertEquals($expect, $result);
+
+		// Preserve last full word
+		$result = StrPlus\StrPlus::limit($string, 40);
+		$this->assertEquals($expect, $result);
+
+		// Allow custom ending
+		$result = StrPlus\StrPlus::limit($string, 41, '...');
+		$expect = 'This is a test by Cloud Under. Thanks for...';
+		$this->assertEquals($expect, $result);
+
+		// Don't preserve word
+		$result = StrPlus\StrPlus::limit($string, 40, null, false);
+		$expect = 'This is a test by Cloud Under. Thanks fo…';
+		$this->assertEquals($expect, $result);
+
+		// Don't preserve word if it leads to an (almost) empty string
+		$result = StrPlus\StrPlus::limit($string, 3);
+		$expect = 'Thi…';
+		$this->assertEquals($expect, $result);
+
+		// Don't add ending if string is short enough
+		$result = StrPlus\StrPlus::limit($string, 50);
+		$expect = $string;
+		$this->assertEquals($expect, $result);
+	}
+
 }

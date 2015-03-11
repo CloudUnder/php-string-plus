@@ -81,27 +81,31 @@ class StrPlus {
 	}
 
 	/**
-	 * Limit string to a number of characters and preserve words where possible.
+	 * Limit string to a number of characters and (optionally)
+	 * preserve words where possible.
 	 *
-	 * @param  string  $value
-	 * @param  int     $limit
-	 * @param  string  $end
-	 * @param  boolean $preserve_words
+	 * @param  string      $string
+	 * @param  int         $limit
+	 * @param  string|null $end (default '…', if null)
+	 * @param  boolean     $preserve_words
 	 * @return string
 	 */
-	public static function limit($value, $limit, $end = '…', $preserve_words = true) {
-		if (mb_strlen($value) <= $limit) return $value;
+	public static function limit($string, $limit, $end = null, $preserve_words = true) {
+		if (is_null($end)) {
+			$end = '…';
+		}
+		if (mb_strlen($string) <= $limit) return $string;
 		if ($preserve_words) {
-			$cut_area = mb_substr($value, $limit - 1, 2, 'UTF-8');
+			$cut_area = mb_substr($string, $limit - 1, 2, 'UTF-8');
 			if (strpos($cut_area, ' ') === false) {
-				$value = mb_substr($value, 0, $limit, 'UTF-8');
-				$space_pos = strrpos($value, ' ');
+				$string = mb_substr($string, 0, $limit, 'UTF-8');
+				$space_pos = strrpos($string, ' ');
 				if ($space_pos !== false) {
-					return rtrim(mb_substr($value, 0, $space_pos, 'UTF-8')) . $end;
+					return rtrim(mb_substr($string, 0, $space_pos, 'UTF-8')) . $end;
 				}
 			}
 		}
-		return rtrim(mb_substr($value, 0, $limit, 'UTF-8')).$end;
+		return rtrim(mb_substr($string, 0, $limit, 'UTF-8')) . $end;
 	}
 
 }
